@@ -124,9 +124,9 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
   // console.log(req.body);
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`; //k can localhost:3000 vi neu up len se de ten domain khac
-  }
+  // if (req.file) {
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`; //k can localhost:3000 vi neu up len se de ten domain khac
+  // }
   const product = new productModel(req.body);
   await product.save();
   res.redirect(`${systemConfig.prefixAdmin}/products`);
