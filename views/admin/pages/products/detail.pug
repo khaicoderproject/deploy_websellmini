@@ -28,9 +28,9 @@ block main
         div(class="mb-4") Vị trí: <b>#{product.position}</b>
 
     if (product.description)
-        div(class="mb-4") #{product.description}
+        div(class="mb-4") !{product.description}
 
     a(href=`/admin/products/edit/${product.id}` class="btn btn-warning") Chỉnh sửa 
     //- "/ ở đầu url mag giá trị tuyệt đối, k dùg để nối url"
-    script(src="/admin/js/product.js")
+    script(src="/admin/js/products.js")
 

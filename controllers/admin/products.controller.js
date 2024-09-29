@@ -4,7 +4,8 @@ const filterButton = require("../../helpers/filterButton");
 const searchForm = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system");
-
+const treeHelper = require("../../helpers/tree");
+const productCategoryModel = require("../../models/product-category.model");
 module.exports.product = async (req, res) => {
   const filterStatus = filterButton(req.query);
 
@@ -33,11 +34,21 @@ module.exports.product = async (req, res) => {
     countPage
   );
 
+  //sort
+  let sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    // console.log(req.query.sortValue);
+    // console.log(req.query.sortKey);
+    sort[req.query.sortKey] = req.query.sortValue;
+  }
+  sort.position = "desc";
+
   const products = await productModel
     .find(find)
-    .sort({ position: "desc" })
+    .sort(sort)
     .limit(objectPagination.limit)
     .skip(objectPagination.skipPage);
+  //limit va skip co tac dung dieu huog pagination
   // console.log(products);
   res.render("admin/pages/products/index", {
     title: "Trang sản phẩm Admin",
@@ -111,7 +122,14 @@ module.exports.deleteStatus = async (req, res) => {
 //   res.redirect("back");
 // };
 module.exports.create = async (req, res) => {
-  res.render("admin/pages/products/create.pug");
+  const category = await productCategoryModel.find({
+    deleted: false,
+  });
+  const newCategory = await treeHelper.tree(category);
+  console.log(newCategory);
+  res.render("admin/pages/products/create.pug", {
+    category: newCategory,
+  });
 };
 module.exports.createPost = async (req, res) => {
   req.body.price = parseInt(req.body.price);
@@ -157,9 +175,9 @@ module.exports.editUpdate = async (req, res) => {
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.price);
   req.body.position = parseInt(req.body.position);
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
+  // if (req.file) {
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`;
+  // }
   try {
     await productModel.updateOne({ _id: id }, req.body);
     req.flash("success", "Cập nhập thành công!");

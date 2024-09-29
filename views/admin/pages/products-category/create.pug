@@ -2,15 +2,13 @@ extends ../../layouts/default.pug
 include ../../mixins/alert
 include ../../mixins/select-tree
 block main
-    //- div #{category}
-    +error(5000)
-    h1(class="mb-4") Thêm mới sản phẩm
-
+    //- h1 #{records}
     form(
-        action=`${prefixAdmin}/products/create`
-        id="form-create-product"
+        action=`${prefixAdmin}/products-category/create`
+        id="form-create-product-category"
         method="POST"
         enctype="multipart/form-data"
+        
     )
 
         div(class="form-group ")
@@ -23,13 +21,11 @@ block main
                 required
             )
         div(class="form-group ")
-            label(for="category_id") Danh mục
-            //- category_id tên trùng với model dtb
-            select(name="category_id" id="category_id" class="form-control") 
-                option(value="") ---Chọn Danh Mục---
-                if(category)
-                    +select-tree(category)
-
+            label(for="parent_id") Danh mục cha
+            select(name="parent_id" id="parent_id" class="form-control") 
+                option(value="") ---Chọn Danh Mục Cha---
+                if(records)
+                    +select-tree(records)
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(
@@ -38,39 +34,7 @@ block main
                 name="description"
                 rows="5"
             )
-        div(class="form-group")
-            label(for="price") Giá
-            input(
-            type="number"
-            class="form-control"
-            id="price"
-            name="price"
-            value="0"
-            min="0"
-            )
-
-        div(class="form-group")
-            label(for="discount") % Giảm giá
-            input(
-                type="number"
-                class="form-control"
-                id="discount"
-                name="discountPercentage"
-                value="0"
-                min="0"
-            )
-
-        div(class="form-group")
-            label(for="stock") Số lượng
-            input(
-            type="number"
-            class="form-control"
-            id="stock"
-            name="stock"
-            value="0"
-            min="0"
-            )
-
+        
         div(class="form-group" form-preview)
             label(for="thumbnail") Ảnh
             input(

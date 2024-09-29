@@ -1,0 +1,36 @@
+extends ../../layouts/default
+include ../../mixins/filterStatus
+include ../../mixins/search
+include ../../mixins/alert
+include ../../mixins/sort
+include ../../mixins/changemulti
+include ../../mixins/pagination
+include ../../mixins/table-tree
+block main
+    .card-header Danh sách
+    .card-body
+        .row
+            .col-8
+                
+            .col-4
+                a(
+                href=`${prefixAdmin}/products-category/create`
+                class="btn btn-outline-success"
+                ) + Thêm mới
+    table(
+                class= "table table-hover table-sm"
+                checkbox-multi
+                )
+                thead
+                    tr
+                        th
+                            input(type="checkbox" name="checkall")
+                        th STT
+                        th Hình ảnh
+                        th Tiêu đề
+                        th Vị trí
+                        th Trạng thái
+                        th Hành động
+                tbody
+                    +table-tree(productCategory)
+    script(src="/admin/js/products.js")  

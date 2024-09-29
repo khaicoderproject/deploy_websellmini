@@ -2,10 +2,12 @@ extends ../../layouts/default
 include ../../mixins/filterStatus
 include ../../mixins/search
 include ../../mixins/alert
+include ../../mixins/sort
+include ../../mixins/changemulti
+include ../../mixins/pagination
 block main
     +success(5000)
     +error(5000)
-    
     .card.mb-3
         .card-header Bộ lọc và Tìm kiếm
         .card-body
@@ -14,6 +16,8 @@ block main
                     +button-status(filterStatus)                   
                 .col-6
                     +search(keyword)
+
+    +sort()
 
     .card.mb-3
         .card-header Danh sách
@@ -26,24 +30,7 @@ block main
                         form-change-multi
                     )
                         .d-flex.align-items-start
-                            .form-group
-                                select(name="type" class="form-control")
-                                    option(disabled selected) Chọn hành động
-                                    option(value="active") Hoạt động
-                                    option(value="inactive") Dừng hoạt động
-                                    option(value="delete") Xóa 
-                                    option(value="change-position") Thay đổi vị trí 
-                            .form-group
-                                input(
-                                    type="text"
-                                    name="ids" 
-                                    value="" 
-                                    class="form-control d-none" 
-                                )
-                                //- luu trong id thay vi url vi cai nay se co nhieu
-                                //- trong khi do url se chi lay acc url co trong dtb, viec nay giup toi uu hon
-                                //-day la 1 trong cac cach truyen len be, form kia cug co the dug cach nay
-                            button(type="submit" class="btn btn-primary") Áp dụng
+                            +changemulti()
                             //- the name tuong ung voi formdata trong network(du lieu gui len) 
                 .col-4
                     a(
@@ -74,7 +61,7 @@ block main
                                 name="id"
                                 value=item.id
                                 )
-                            td #{index + 1}
+                            td #{pagination.limit*(pagination.currentPage-1)+(index + 1)}
                             td
                                 img(
                                 src=item.thumbnail,
@@ -129,25 +116,7 @@ block main
                 //-     td
                 //-         button(class="btn btn-warning btn-sm") Sửa
                 //-         button(class="btn btn-danger btn-sm ml-1") Xóa
-    nav
-        ul(class="pagination")
-            if(pagination.currentPage!=1)
-                li(class="page-item")
-                    button(class="page-link" button-pagination=1) <<
-            if(pagination.currentPage>1)
-                li(class="page-item")
-                    button(class="page-link" button-pagination=pagination.currentPage-1) <
-            -   for(var i=1;i<=pagination.total;i++)  
-                li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
-                    button(
-                        class="page-link" 
-                        button-pagination=i
-                        ) #{i}
-            if(pagination.currentPage<pagination.total)
-                li(class="page-item")
-                    button(class="page-link" button-pagination=(Number(pagination.currentPage)+1)) >
-                li(class="page-item")
-                    button(class="page-link" button-pagination=pagination.total) >>
+    +pagination(pagination)
     form(
         action=""
         method="POST"

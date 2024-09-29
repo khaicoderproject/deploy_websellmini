@@ -32,6 +32,10 @@ module.exports.detail = async (req, res) => {
       slug: req.params.slug,
     };
     const products = await productModel.findOne(find);
+    products.priceNew = (
+      (products.price * (100 - products.discountPercentage)) /
+      100
+    ).toFixed(0);
     res.render("client/pages/products/detail", {
       title: products.title,
       product: products,

@@ -11,7 +11,14 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
+const path = require("path");
 database.connect();
+
+//Tinymce
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 app.use(cookieParser("abcabcabc"));
 app.use(
@@ -41,6 +48,12 @@ router(app);
 app.locals.prefixAdmin = systemConfig.prefixAdmin; //chi dung duoc trong file pug
 
 app.use(express.static(`${__dirname}/public`)); ////thêm dirname vì khi deploy server sẽ k hiểu duoc.
+
+//Tinymce
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

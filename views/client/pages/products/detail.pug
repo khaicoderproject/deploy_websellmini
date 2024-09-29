@@ -2,6 +2,7 @@ extends ../../layout/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/alert
 block main
+    //- h1 #{product}
     if (product.title)
         h1(class="mb-4") #{product.title}
 
@@ -12,13 +13,14 @@ block main
         div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}%</b>
 
     if (product.stock)
-        div(class="mb-4") Còn lại: <b>#{product.stock}</b>
+        div(class="mb-4") Số lượng còn lại: <b>#{product.stock}</b>
 
     if (product.thumbnail)
         div(class="mb-4")
             img(src=product.thumbnail style="width: 100px")
 
     if (product.description)
-        div(class="mb-4") #{product.description}
+        div(class="mb-4") !{product.description} 
+        //- description mang giá trị css của tiny nên phải đổi từ # thành !
     //- "/ ở đầu url mag giá trị tuyệt đối, k dùg để nối url"
-    script(src="/admin/js/product.js")
+    script(src="/admin/js/products.js")

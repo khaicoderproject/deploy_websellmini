@@ -26,13 +26,13 @@ block main
         div(class="form-group")
         label(for="desc") Mô tả
         textarea(
-            class="form-control"
+            class="form-control textarea-tinymce"
             id="desc"
             name="description"
             rows="5"
         ) #{product.description}
         //- text area k nhan value nen se k de trog attribute
-        div(class="form-group")
+        div(class="form-group ")
             label(for="price") Giá
             input(
             type="number"
@@ -116,4 +116,4 @@ block main
                 class="btn btn-primary"
             ) Cập Nhật
 
-    script(src="/admin/js/product.js")
+    script(src="/admin/js/products.js")

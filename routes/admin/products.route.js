@@ -26,6 +26,8 @@ router.get("/edit/:id", controllerAdmin.edit);
 router.patch(
   "/edit/:id",
   upload.single("thumbnail"), //có file cần sử dụng multer vì bodyparse không nhận dc file
+  middlewareProduct.uploadCloud,
+  validate.createPost,
   controllerAdmin.editUpdate
 );
 router.get("/detail/:id", controllerAdmin.detail);

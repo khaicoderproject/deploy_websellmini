@@ -2,17 +2,20 @@
 const changeStatus = document.querySelectorAll("[button-change-status]");
 if (changeStatus.length > 0) {
   const changeFormStatus = document.querySelector("#form-change-status");
-  const path = changeFormStatus.getAttribute("data-path");
-  changeStatus.forEach((button) => {
-    button.addEventListener("click", () => {
-      const status = button.getAttribute("status");
-      const id = button.getAttribute("id");
-      const changeStatus = status == "active" ? "inactive" : "active";
-      const actions = path + `/${changeStatus}/${id}?_method=PATCH`;
-      changeFormStatus.action = actions;
-      changeFormStatus.submit();
+
+  if (changeFormStatus) {
+    const path = changeFormStatus.getAttribute("data-path");
+    changeStatus.forEach((button) => {
+      button.addEventListener("click", () => {
+        const status = button.getAttribute("status");
+        const id = button.getAttribute("id");
+        const changeStatus = status == "active" ? "inactive" : "active";
+        const actions = path + `/${changeStatus}/${id}?_method=PATCH`;
+        changeFormStatus.action = actions;
+        changeFormStatus.submit();
+      });
     });
-  });
+  }
 }
 //end change status
 
@@ -94,18 +97,54 @@ if (formChangeStatus) {
 const deleteStatus = document.querySelectorAll("[button-delete]");
 if (deleteStatus.length > 0) {
   const deleteForm = document.querySelector("#delete-status");
-  const path = deleteForm.getAttribute("data-path");
-  const get = deleteForm.getAttribute("action");
-  deleteStatus.forEach((button) => {
-    button.addEventListener("click", () => {
-      const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này?");
-      if (isConfirm) {
-        const item = button.getAttribute("data-id");
-        const action = path + `/${item}?_method=DELETE`;
-        deleteForm.action = action;
-        deleteForm.submit(); //gui len tren server
-      }
+  if (deleteForm) {
+    const path = deleteForm.getAttribute("data-path");
+    const get = deleteForm.getAttribute("action");
+    deleteStatus.forEach((button) => {
+      button.addEventListener("click", () => {
+        const isConfirm = confirm("Bạn có chắc muốn xóa sản phẩm này?");
+        if (isConfirm) {
+          const item = button.getAttribute("data-id");
+          const action = path + `/${item}?_method=DELETE`;
+          deleteForm.action = action;
+          deleteForm.submit(); //gui len tren server
+        }
+      });
     });
-  });
+  }
 }
 //end delete item
+
+// sort
+const sort = document.querySelector("[sort]");
+if (sort) {
+  const sortSelect = sort.querySelector("[sort-selected]");
+  const sortButton = sort.querySelector("[sort-clear]");
+  const url = new URL(window.location.href);
+  sortSelect.addEventListener("change", (e) => {
+    console.log(e.target.value);
+    const sortValue = e.target.value;
+    const [key, value] = sortValue.split("-");
+    url.searchParams.set("sortKey", key);
+    url.searchParams.set("sortValue", value);
+    console.log(url);
+    console.log(window);
+    window.location.href = url.href;
+  });
+  //clear
+  sortButton.addEventListener("click", () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+    window.location.href = url.href;
+  });
+  //selected
+  const sortKey = url.searchParams.get("sortKey");
+  const sortValue = url.searchParams.get("sortValue");
+  if (sortKey && sortValue) {
+    const sortString = `${sortKey}-${sortValue}`;
+    const getSort = sort.querySelector(`option[value=${sortString}]`);
+    getSort.selected = true;
+  }
+}
+
+//end sort

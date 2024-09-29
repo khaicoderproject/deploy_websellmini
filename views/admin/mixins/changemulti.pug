@@ -1,0 +1,19 @@
+mixin changemulti()
+    .form-group
+        select(name="type" class="form-control")
+            option(disabled selected) Chọn hành động
+            option(value="active") Hoạt động
+            option(value="inactive") Dừng hoạt động
+            option(value="delete") Xóa 
+            option(value="change-position") Thay đổi vị trí 
+    .form-group
+        input(
+            type="text"
+            name="ids" 
+            value="" 
+            class="form-control d-none" 
+        )
+        //- luu trong id thay vi url vi cai nay se co nhieu
+        //- trong khi do url se chi lay acc url co trong dtb, viec nay giup toi uu hon
+        //-day la 1 trong cac cach truyen len be, form kia cug co the dug cach nay
+    button(type="submit" class="btn btn-primary") Áp dụng
