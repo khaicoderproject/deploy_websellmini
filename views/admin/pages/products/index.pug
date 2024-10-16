@@ -5,6 +5,7 @@ include ../../mixins/alert
 include ../../mixins/sort
 include ../../mixins/changemulti
 include ../../mixins/pagination
+include ../../mixins/moment
 block main
     +success(5000)
     +error(5000)
@@ -33,10 +34,11 @@ block main
                             +changemulti()
                             //- the name tuong ung voi formdata trong network(du lieu gui len) 
                 .col-4
-                    a(
-                    href=`${prefixAdmin}/products/create`
-                    class="btn btn-outline-success"
-                    ) + Thêm mới
+                    if(role.permissions.includes("products_create"))  
+                        a(
+                        href=`${prefixAdmin}/products/create`
+                        class="btn btn-outline-success"
+                        ) + Thêm mới
 
             table(
                 class= "table table-hover table-sm"
@@ -52,6 +54,8 @@ block main
                         th Giá
                         th Vị trí
                         th Trạng thái
+                        th Người đăng
+                        th Người chỉnh sửa
                         th Hành động
                 tbody
                     each item,index in products
@@ -93,13 +97,28 @@ block main
                                         status=item.status
                                         id=item.id
                                         class="badge badge-danger") Dừng hoạt động
+                            td 
+                                p #{item.accountFullName}
+                                if(item.accountFullName)
+                                    +datetime(item.createBy.createAt)
+                            td 
+                                //- p #{item.accountFullNameUpdate} cach nay la cach 1
+                                //- cach 2:
+                                - const updatedBy=item.updatedBy.slice(-1)[0]
+                                if(updatedBy)
+                                    p #{updatedBy.accountFullName}
+                                    if(item.accountFullName)
+                                        p
+                                            +datetime(updatedBy.updatedAt)
                             td
                                 a(class="btn btn-secondary btn-sm" href=`${prefixAdmin}/products/detail/${item.id}`) Chi tiết
-                                a(class="btn btn-warning btn-sm" href=`${prefixAdmin}/products/edit/${item.id}`) Sửa
-                                button(class="btn btn-danger btn-sm ml-1"
-                                data-id=item.id
-                                button-delete
-                                ) Xóa
+                                if(role.permissions.includes("products_edit"))  
+                                    a(class="btn btn-warning btn-sm" href=`${prefixAdmin}/products/edit/${item.id}`) Sửa
+                                if(role.permissions.includes("products_delete"))
+                                    button(class="btn btn-danger btn-sm ml-1"
+                                    data-id=item.id
+                                    button-delete
+                                    ) Xóa
                 //- tr
                 //-     td 2
                 //-     td

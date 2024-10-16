@@ -1,0 +1,24 @@
+extends ../../layouts/auth
+include ../../mixins/alert
+block main
+    +error(5000)
+    .container.my-5
+        .row.justify-content-center
+            .col-8
+                h1(class="text-center") Đăng nhập
+                .center-form
+                form(
+                action=`${prefixAdmin}/auth/login`
+                id="form-login"
+                method="POST" 
+            )
+                    .form-group
+                        label(for="email") Email address
+                        input.form-control(type="email" placeholder="Enter email" name="email" aria-describedby="emailHelp")
+                    .form-group
+                        label(for="password") Password
+                        input.form-control(type="password" placeholder="Password" name="password")
+                    .form-group.form-check
+                        input.form-check-input(type="checkbox")
+                        label.form-check-label(for="exampleCheck1") Check me out
+                    button.btn.btn-primary(type="submit") Submit

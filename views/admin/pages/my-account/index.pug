@@ -1,0 +1,28 @@
+extends ../../layouts/default
+block main
+    h1 Thông tin cá nhân
+    if (user.fullname)
+        div(class="mb-4") Tên: <b>#{user.fullname}</b>
+
+    if (user.email)
+        div(class="mb-4") Email: <b>#{user.email}</b>
+
+    if (user.phone)
+        div(class="mb-4") Số điện thoại: <b>#{user.phone}</b>
+
+    if (user.avatar)
+        div(class="mb-4")
+            img(src=user.avatar style="width: 100px")
+
+    if (user.status)
+        div(class="mb-4")
+            span Trang thái:
+            if (user.status === "active")
+                span(class="badge badge-success") Hoạt động
+            else
+                span(class="badge badge-danger") Dừng hoạt động
+    if (role.title)
+        div(class="mb-4") Phân quyền: <b>#{role.title}</b>
+    a(href=`/admin/my-account/edit` class="btn btn-warning") Chỉnh sửa 
+    //- "/ ở đầu url mag giá trị tuyệt đối, k dùg để nối url"
+    script(src="/admin/js/products.js")

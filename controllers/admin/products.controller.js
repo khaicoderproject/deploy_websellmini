@@ -6,6 +6,8 @@ const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system");
 const treeHelper = require("../../helpers/tree");
 const productCategoryModel = require("../../models/product-category.model");
+const accountModel = require("../../models/account.model");
+
 module.exports.product = async (req, res) => {
   const filterStatus = filterButton(req.query);
 
@@ -50,6 +52,36 @@ module.exports.product = async (req, res) => {
     .skip(objectPagination.skipPage);
   //limit va skip co tac dung dieu huog pagination
   // console.log(products);
+
+  // day la cach tu lam
+  // for (const product of products) {
+  //   if (product.createBy.account_id === res.locals.user.id) {
+  //     product.accountFullName = res.locals.user.fullname;
+  //   }
+  // }
+
+  //cach dung voi video
+  for (const product of products) {
+    //(danh cho lay thong tin nguoi dang san pham)
+    const user = await accountModel.findOne({
+      _id: product.createBy.account_id,
+    });
+    if (user) {
+      product.accountFullName = user.fullname;
+    }
+    // danh cho lay thong tin nguoi chinh sua san pham
+    // const updatedBy = product.updatedBy[product.updatedBy.length - 1];
+    const updatedBy = product.updatedBy.slice(-1)[0]; //co the su dung cai nay thay vi length
+    if (updatedBy) {
+      const userUpdated = await accountModel.findOne({
+        _id: updatedBy.account_id,
+      });
+      // product.accountFullNameUpdate = userUpdated.fullname; cach 1
+      // cach 2
+      updatedBy.accountFullName = userUpdated.fullname;
+    }
+  }
+
   res.render("admin/pages/products/index", {
     title: "Trang sản phẩm Admin",
     products: products,
@@ -89,7 +121,13 @@ module.exports.changeMulti = async (req, res) => {
     case "delete":
       await productModel.updateMany(
         { _id: { $in: ids } },
-        { deleted: true, deletedAt: new Date() }
+        {
+          deleted: true,
+          deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+          },
+        }
       );
       break;
     case "change-position":
@@ -109,8 +147,12 @@ module.exports.deleteStatus = async (req, res) => {
     { _id: id },
     {
       deleted: true,
-      deletedAt: new Date(), //them thoi gian xoa(luu y phai cap nhap trong mongoose)
-      by: "hehe",
+      // deletedAt: new Date(), //them thoi gian xoa(luu y phai cap nhap trong mongoose)
+      // by: "hehe",
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deletedAt: new Date(),
+      },
     }
   );
   res.redirect("back");
@@ -126,7 +168,7 @@ module.exports.create = async (req, res) => {
     deleted: false,
   });
   const newCategory = await treeHelper.tree(category);
-  console.log(newCategory);
+  // console.log(newCategory);
   res.render("admin/pages/products/create.pug", {
     category: newCategory,
   });
@@ -145,9 +187,13 @@ module.exports.createPost = async (req, res) => {
   // if (req.file) {
   //   req.body.thumbnail = `/uploads/${req.file.filename}`; //k can localhost:3000 vi neu up len se de ten domain khac
   // }
+  req.body.createBy = {
+    account_id: res.locals.user.id,
+  };
   const product = new productModel(req.body);
   await product.save();
   res.redirect(`${systemConfig.prefixAdmin}/products`);
+  // res.redirect("back");
   //đoạn này cần tối ưu
 };
 //edit
@@ -179,7 +225,19 @@ module.exports.editUpdate = async (req, res) => {
   //   req.body.thumbnail = `/uploads/${req.file.filename}`;
   // }
   try {
-    await productModel.updateOne({ _id: id }, req.body);
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date(),
+    };
+    // req.body.updatedBy = updatedBy; dung phuong phap nay se chi luu duoc 1 object cuoi
+    // vi the nen su dung push, va dung phuong thuc spread gui len object
+    await productModel.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+        $push: { updatedBy: updatedBy },
+      } // object 2 nay cap nhap
+    );
     req.flash("success", "Cập nhập thành công!");
   } catch (error) {
     req.flash("error", "Cập nhập thất bại!");

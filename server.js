@@ -12,6 +12,7 @@ const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const path = require("path");
+const moment = require("moment");
 database.connect();
 
 //Tinymce
@@ -54,6 +55,9 @@ app.use(
   "/tinymce",
   express.static(path.join(__dirname, "node_modules", "tinymce"))
 );
+
+//moment
+app.locals.moment = moment;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

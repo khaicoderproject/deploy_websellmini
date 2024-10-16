@@ -1,4 +1,6 @@
-header.header 
+include ../mixins/sub-menu
+header.header
+    div #{newRecords}
     .container 
         .row.align-items-center 
             .col-3 
@@ -8,7 +10,24 @@ header.header
             .col-9 
                 .inner-menu 
                     ul 
-                        li 
+                        li
                             a(href="/") Trang chủ
-                        li 
+                        li(class="sub-menu")
+                            -const path= `/products`
                             a(href="/products") Sản phẩm
+                            +sub-menu(layoutCategory,path)
+                            //- ul
+                            //-     li
+                            //-         a(href="/products/slug-1") Mục 1
+                            //-         ul
+                            //-             li
+                            //-                 a(href="/products/slug-1-1") Mục 1 - 1
+                            //-             li
+                            //-                 a(href="/products/slug-1-2") Mục 1 - 2
+                            //-                 ul
+                            //-                     li
+                            //-                         a(href="/products/slug-1-2-1") Mục 1 - 2 - 1
+                            //-                     li
+                            //-                         a(href="/products/slug-1-2-2") Mục 1 - 2 - 2
+                            //-     li
+                            //-         a(href="/products/slug-2") Mục 2

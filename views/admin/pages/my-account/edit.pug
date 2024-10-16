@@ -1,0 +1,97 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert
+block main
+    +error(5000)
+    +success(5000)
+    h1(class="mb-4") Chỉnh sửa tài khoản
+
+    form(
+        action=`${prefixAdmin}/my-account/edit?_method=PATCH`
+        id="form-edit-my-account"
+        method="POST"
+        enctype="multipart/form-data"
+    )
+
+        div(class="form-group")
+        label(for="fullname") Họ và tên
+        input(
+            type="text"
+            class="form-control"
+            id="fullname"
+            name="fullname"
+            value=user.fullname
+            required
+        )
+
+        //- text area k nhan value nen se k de trog attribute
+        div(class="form-group ")
+            label(for="email") Email
+            input(
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            min="0"
+            value=user.email
+            )
+        div(class="form-group ")
+            label(for="password") Password
+            input(
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            min="0"
+            value=user.password
+            )
+        div(class="form-group")
+            label(for="phone") Số điện thoại
+            input(
+                type="number"
+                class="form-control"
+                id="phone"
+                name="phone"
+                min="0"
+                value=user.phone
+            )
+
+        div(class="form-group" form-preview)
+            label(for="avatar") Avatar
+            input(
+                type="file" 
+                class="form-control-file"
+                id="avatar"
+                name="avatar"
+                accept="image/*"
+                img-uploaded
+                value=user.avatar
+            )  
+            img(src=user.avatar class="img-preview" img-preview)
+        
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusActive"
+                name="status"
+                value="active"
+                checked= (user.status=="active"? true: false  )
+            )
+            label(for="statusActive" class="form-check-label") Hoạt động
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusInActive"
+                name="status"
+                value="inactive"
+                checked= (user.status=="inactive"? true: false  )
+            )
+            label(for="statusInActive" class="form-check-label") Dừng hoạt động
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập Nhật
+        
+    script(src="/admin/js/products.js")

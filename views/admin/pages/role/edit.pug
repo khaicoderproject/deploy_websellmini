@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert
+include ../../mixins/select-tree
+block main
+    //- h1 #{records}
+    form(
+        action=`${prefixAdmin}/role/edit/${records.id}?_method=PATCH`
+        id="form-create-product-category"
+        method="POST"
+        
+    )
+        div(class="form-group ")
+            label(for="title") Tiêu đề
+            input(
+                type="text"
+                class="form-control "
+                id="title"
+                name="title"
+                value=records.title
+                required                
+            )
+        div(class="form-group")
+            label(for="desc") Mô tả
+            textarea(
+                class="form-control textarea-tinymce"
+                id="desc"
+                name="description"
+                rows="5"
+            ) #{records.description}
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Chỉnh sửa
+
+    script(src="/admin/js/products.js")

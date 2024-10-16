@@ -13,10 +13,11 @@ block main
             .col-8
                 
             .col-4
-                a(
-                href=`${prefixAdmin}/products-category/create`
-                class="btn btn-outline-success"
-                ) + Thêm mới
+                if(role.permissions.includes("products-category_create"))  
+                    a(
+                    href=`${prefixAdmin}/products-category/create`
+                    class="btn btn-outline-success"
+                    ) + Thêm mới
     table(
                 class= "table table-hover table-sm"
                 checkbox-multi
