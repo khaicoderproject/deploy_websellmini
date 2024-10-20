@@ -1,0 +1,9 @@
+extends ../../layout/default
+include ../../mixins/product-layout
+include ../../mixins/box-head
+block main
+    .container.my-3
+        .row
+            .col-12
+                +box-head("Kết quả tìm kiếm như sau: ")
+        +product-grid(products)

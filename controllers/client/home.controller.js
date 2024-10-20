@@ -9,9 +9,18 @@ module.exports.index = async (req, res) => {
     })
     .sort({ position: "desc" })
     .limit(5);
+  const newProducts = await productModel
+    .find({
+      deleted: false,
+      status: "active",
+    })
+    .sort({ position: "desc" })
+    .limit(5);
   const newProduct = productNewPriceHelper.newProduct(products);
+  const newProductnew = productNewPriceHelper.newProduct(newProducts);
   res.render("client/pages/homes/index", {
     title: "Đây là trang chủ",
     products: newProduct,
+    newProducts: newProductnew,
   });
 };

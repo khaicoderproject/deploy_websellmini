@@ -20,6 +20,8 @@ module.exports.product = async (req, res) => {
     // console.log(find.status);
   }
   const searchStatus = searchForm(req.query);
+  // console.log(searchStatus);
+  // console.log(req.query);
   if (searchStatus.regex) {
     find.title = searchStatus.regex;
   }

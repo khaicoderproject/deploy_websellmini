@@ -1,6 +1,16 @@
 extends ../../layout/default
 include ../../mixins/product-layout
+include ../../mixins/box-head
 block main
-        h1 Sản phẩm nổi bật
-        .container.my-3
-                +product-grid(products)
+  .container.my-3
+        .row
+            .col-12
+                +box-head("Sản phẩm nổi bật")
+        .row
+            +product-grid(products)
+        
+        .row
+            .col-12
+                +box-head("Sản phẩm mới nhất")
+        .row
+            +product-grid(newProducts)
