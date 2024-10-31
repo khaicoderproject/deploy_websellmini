@@ -13,7 +13,7 @@ module.exports.index = async (req, res) => {
     find.title = searchStatus.regex;
   }
   const record = await productModel.find(find);
-  const newrecord = productNewPriceHelper.newProduct(record);
+  const newrecord = productNewPriceHelper.newProducts(record);
   res.render("client/pages/search/index", {
     products: newrecord,
   });

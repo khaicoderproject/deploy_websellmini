@@ -16,8 +16,8 @@ module.exports.index = async (req, res) => {
     })
     .sort({ position: "desc" })
     .limit(5);
-  const newProduct = productNewPriceHelper.newProduct(products);
-  const newProductnew = productNewPriceHelper.newProduct(newProducts);
+  const newProduct = productNewPriceHelper.newProducts(products);
+  const newProductnew = productNewPriceHelper.newProducts(newProducts);
   res.render("client/pages/homes/index", {
     title: "Đây là trang chủ",
     products: newProduct,

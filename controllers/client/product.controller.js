@@ -3,13 +3,14 @@ const productCategoryModel = require("../../models/product-category.model");
 const productNewPriceHelper = require("../../helpers/productPriceNew");
 const productPriceNewHelper = require("../../helpers/productPriceNew");
 const product = require("../../models/product.model");
+const subCategoryHelper = require("../../helpers/subCategory");
 module.exports.index = async (req, res) => {
   const products = await productModel.find({
     status: "active",
     deleted: false,
   });
 
-  const newProduct = productNewPriceHelper.newProduct(products);
+  const newProduct = productNewPriceHelper.newProducts(products);
   // console.log(newProduct);
   res.render("client/pages/products/index", {
     title: "Đây là product",
@@ -58,24 +59,10 @@ module.exports.categorySlug = async (req, res) => {
     slug: slug,
     deleted: false,
   });
-  const getSubCategory = async (parentId) => {
-    const subs = await productCategoryModel.find({
-      parent_id: parentId,
-      status: "active",
-      deleted: false,
-    });
-
-    let allSub = [...subs];
-
-    for (const sub of subs) {
-      const childs = await getSubCategory(sub.id);
-      allSub = allSub.concat(childs);
-    }
-
-    return allSub;
-  };
-
-  const listSubCategory = await getSubCategory(recordCategory.id);
+  const listSubCategory = await subCategoryHelper.getSubCategory(
+    productCategoryModel,
+    recordCategory.id
+  );
 
   const listSubCategoryId = listSubCategory.map((item) => item.id);
 
