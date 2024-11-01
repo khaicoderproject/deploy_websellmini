@@ -5,6 +5,7 @@ module.exports.index = async (req, res) => {
   const cartId = req.cookies.cartId;
   const cart = await cartModel.findOne({ _id: cartId });
   const cartProducts = cart.products;
+  let count = 0;
   if (cart.products.length > 0) {
     for (const item of cartProducts) {
       const productId = item.product_id;
@@ -13,12 +14,18 @@ module.exports.index = async (req, res) => {
         .select("title thumbnail slug price discountPercentage");
       productInfo.priceNew = newPriceHelper.newProduct(productInfo);
       item.productInfo = productInfo;
+      item.totalPrice = productInfo.priceNew * item.quantity;
     }
   }
+  cart.totalPrice = cart.products.reduce(
+    (sum, item) => sum + item.totalPrice,
+    0
+  );
 
   // console.log(newPrice);
   res.render("client/pages/cart/index", {
     products: cartProducts,
+    cartDetail: cart,
   });
 };
 module.exports.add = async (req, res) => {
@@ -49,5 +56,16 @@ module.exports.add = async (req, res) => {
       }
     );
   }
+  res.redirect("back");
+};
+
+module.exports.delete = async (req, res) => {
+  const cartId = req.cookies.cartId;
+  const id = req.params.id;
+  const cart = await cartModel.updateOne(
+    { _id: cartId },
+    { $pull: { products: { product_id: id } } },
+    { new: true }
+  );
   res.redirect("back");
 };

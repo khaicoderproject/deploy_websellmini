@@ -2,3 +2,48 @@
 /node_modules
 package.json
 package-lock.json
+public/uploads/
+public/img/
+.DS_Store
+Thumbs.db
+
+# Bỏ qua các file log
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Bỏ qua thư mục cache
+.cache/
+.vscode/
+.idea/
+out/
+
+# Bỏ qua build output (dành cho các project frontend hay backend có compile)
+dist/
+build/
+
+# Bỏ qua coverage data (khi sử dụng các công cụ kiểm tra mã như Jest)
+coverage/
+
+# Bỏ qua file tạm thời
+*.tmp
+*.temp
+
+# Bỏ qua các file lock của Yarn
+yarn.lock
+
+# Bỏ qua các thư mục output của hệ thống hoặc IDE
+*.sublime-workspace
+*.sublime-project
+*.swp
+*~
+
+# Bỏ qua các file tạm của hệ điều hành khác
+Desktop.ini
+*.bak
+
+# Bỏ qua các file môi trường khác (nếu có staging hay testing)
+.env.local
+.env.*.local
