@@ -5,6 +5,7 @@ const cartRoutes = require("./cart.route");
 const searchRoutes = require("./search.route");
 const cartMiddleware = require("../../middleware/client/cart.middleware");
 const apiRoute = require("./api.route");
+const orderRoute = require("./order.route");
 module.exports = (app) => {
   app.use(categoryMiddleware.category); //dung cho toan bo route co trong client, đỡ tốn tgian phải gán vào từng route
   // app.use(cartMiddleware.cartId);
@@ -13,4 +14,5 @@ module.exports = (app) => {
   app.use("/cart", cartRoutes);
   app.use("/search", searchRoutes);
   app.use("/api/v1", apiRoute);
+  app.use("/checkout", orderRoute);
 };

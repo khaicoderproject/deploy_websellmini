@@ -102,21 +102,6 @@ html, body {
   }
   
   /* Để căn giữa form theo chiều ngang và dọc */
-  .center-form {
-    display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center;     /* Căn giữa theo chiều dọc */
-    height: 100vh;           /* Chiều cao của toàn màn hình */
-  }
-  
-  form {
-    width: 100%;
-    max-width: 400px;        /* Đặt chiều rộng tối đa của form */
-    padding: 20px;           /* Khoảng cách bên trong form */
-    background-color: #f8f9fa; /* Màu nền nhạt cho form */
-    border-radius: 8px;      /* Bo tròn góc của form */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
-  }
   
   /* sub-menu */
 .sub-menu {
