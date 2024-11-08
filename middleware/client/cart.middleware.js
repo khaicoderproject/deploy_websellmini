@@ -16,11 +16,13 @@ module.exports.cartId = async (req, res, next) => {
     const cart = await cartModel.findOne({
       _id: cartId,
     });
-    const totalQuantity = cart.products.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
-    res.locals.totalQuantity = totalQuantity;
+    if (cart) {
+      const totalQuantity = cart.products.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      res.locals.totalQuantity = totalQuantity;
+    }
   }
   next();
 };

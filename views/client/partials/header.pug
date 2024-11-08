@@ -24,6 +24,26 @@ header.header
                             +sub-menu(layoutCategory,path)
                         li
                             a(href="/cart") Giỏ hàng(#{totalQuantity})
+                        if(user)
+                            li 
+                                a(href="/user/info") Xin chào #{user.fullName}
+                            li 
+                                a(href="/user/logout") Đăng Xuất 
+                        else
+                            li 
+                                a(href="/user/login") Đăng Nhập   
+                            li 
+                                a(href="/user/register") Đăng Ký   
+                          
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             //- ul
                             //-     li
                             //-         a(href="/products/slug-1") Mục 1
