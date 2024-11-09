@@ -1,48 +1,33 @@
-const nodemailer = require("nodemailer");
-
-// Tạo transporter với Gmail SMTP
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.sendMail = async (email, subject, html) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465, // hoặc 587 nếu bạn dùng TLS
-    secure: true, // Sử dụng true cho cổng 465 và false cho cổng 587
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  // Kiểm tra cấu hình kết nối
-  await new Promise((resolve, reject) => {
-    transporter.verify((error, success) => {
-      if (error) {
-        console.error("❌ Verification Error:", error.message);
-        reject(error);
-      } else {
-        console.log("✅ Server is ready to take messages");
-        resolve(success);
-      }
-    });
-  });
-
-  // Tùy chọn email
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  const msg = {
     to: email,
+    from: "khaicopyright@gmail.com", // Use the email address or domain you verified above
     subject: subject,
     html: html,
   };
+  //ES6
+  sgMail.send(msg).then(
+    () => {},
+    (error) => {
+      console.error(error);
 
-  // Gửi email
-  await new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("❌ Sending Error:", error.message);
-        reject(error);
-      } else {
-        console.log("✅ Email sent:", info.response);
-        resolve(info);
+      if (error.response) {
+        console.error(error.response.body);
       }
-    });
-  });
+    }
+  );
+  //ES8
+  // (async () => {
+  //   try {
+  //     await sgMail.send(msg);
+  //   } catch (error) {
+  //     console.error(error);
+
+  //     if (error.response) {
+  //       console.error(error.response.body);
+  //     }
+  //   }
+  // })();
 };
