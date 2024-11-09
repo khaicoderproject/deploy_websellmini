@@ -3,7 +3,9 @@ const nodemailer = require("nodemailer");
 // Create a transporter object using Gmail SMTP
 module.exports.sendMail = (email, subject, html) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465, // hoặc 587 nếu bạn dùng TLS
+    secure: true, // Sử dụng true cho cổng 465 và false cho cổng 587
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
