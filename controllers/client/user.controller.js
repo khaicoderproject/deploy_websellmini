@@ -26,6 +26,10 @@ module.exports.registerPost = async (req, res) => {
   res.redirect("/");
 };
 
+module.exports.login = (req, res) => {
+  res.render("client/pages/auth/login", { title: "Đăng nhập" });
+};
+
 module.exports.loginPost = async (req, res) => {
   const checkLogin = await userModel.findOne({ email: req.body.email });
   if (!checkLogin) {
@@ -38,18 +42,22 @@ module.exports.loginPost = async (req, res) => {
     res.redirect("back");
     return;
   }
+  const cart = await cartModel.findOne({ user_id: checkLogin.id });
+  if (cart) {
+    res.cookie("cartId", cart.id);
+  } else {
+    await cartModel.updateOne(
+      { _id: req.cookies.cartId },
+      { user_id: checkLogin._id }
+    );
+  }
   res.cookie("tokenUser", checkLogin.tokenUser);
-  await cartModel.updateOne(
-    { _id: req.cookies.cartId },
-    { user_id: checkLogin._id }
-  );
-
   res.redirect("/");
 };
 
 module.exports.logout = (req, res) => {
   res.clearCookie("tokenUser");
-  res.clearCookie("tokenUser");
+  res.clearCookie("cartId");
   res.redirect("/");
 };
 
