@@ -34,7 +34,10 @@ module.exports.add = async (req, res) => {
   const cartId = req.cookies.cartId;
   const cart = await cartModel.findOne({ _id: cartId });
   // console.log(cart.products);
-  const existsQuantity = cart.products.find((item) => item.product_id == id);
+  // const existsQuantity = cart.products.find((item) => item.product_id == id);
+  const existsQuantity =
+    cart?.products?.find((item) => item.product_id == id) || null;
+
   // console.log(existsQuantity);
   if (existsQuantity) {
     const newExistsQuantity = existsQuantity.quantity + parseInt(quantity);
